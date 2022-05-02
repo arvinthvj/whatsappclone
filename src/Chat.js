@@ -80,28 +80,30 @@ function Chat() {
                     <p key={message.id} className={`chat_message ${ message.name == user.displayName && 'chat_receiver'}`}>
                         <span className="chat_name">{message.name}</span>
                         {message.message}
-                        <span className="chat_timestemp">{!moment(new Date(
-                            messages.
+                        <span className="chat_timestemp">{moment(new Date(
+                            message.
+                            timestamp1
+                        )).fromNow().includes("seconds") || moment(new Date(
+                            message.
+                            timestamp1
+                        )).fromNow().includes("minute") || moment(new Date(
+                            message.
+                            timestamp1
+                        )).fromNow().includes("hour") ? moment(new Date(
+                            message.
+                            timestamp1
+                        )).fromNow() :  (`${moment(new Date(message.timestamp1)).format('hh:mm A')} ${new Date(message.timestamp1).toLocaleDateString()}`)} 
+                        {/* { !moment(new Date(
+                            message.
                             timestamp1
                         )).fromNow().includes("seconds") || !moment(new Date(
                             message.
                             timestamp1
                         )).fromNow().includes("minutes") || !moment(new Date(
-                            message?.
-                            timestamp1
-                        )).fromNow().includes("hours") ? moment(new Date(
                             message.
                             timestamp1
-                        )).fromNow(): moment(new Date(message.timestamp1)).format('hh:mm A') } { !moment(new Date(
-                            message.
-                            timestamp1
-                        )).fromNow().includes("seconds") || !moment(new Date(
-                            message.
-                            timestamp1
-                        )).fromNow().includes("minutes") || !moment(new Date(
-                            message.
-                            timestamp1
-                        )).fromNow().includes("hours") ? "": new Date(message.timestamp1).toDateString()}</span>
+                        )).fromNow().includes("hours") ? "": new Date(message.timestamp1).toDateString()} */}
+                        </span>
                     </p>
                 ))}
             </div>
