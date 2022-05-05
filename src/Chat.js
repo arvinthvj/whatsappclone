@@ -17,15 +17,22 @@ function Chat() {
     const [roomName, setRoomName] = useState("");
     const [messages, setMessages] = useState([]);
     const [{user}, dispatch] = useStateValue();
-
     useEffect(()=>{
         if(roomId){
             db.collection('rooms').doc(roomId).onSnapshot(snapshot => {
                 setRoomName(snapshot.data().name);
             });
-
+            let dateOnceFinder = {};
             db.collection('rooms').doc(roomId).collection("messages").orderBy("timestamp","asc").onSnapshot(snapshot => {
-                setMessages(snapshot.docs.map(doc => doc.data()))
+                setMessages(snapshot.docs.map(doc => {
+                    debugger
+                    if(!dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()]){
+                        dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()] = moment(new Date(doc.data().timestamp1).toLocaleDateString(), "DD/MM/YYYY").fromNow().includes("day") ? moment().add(parseInt(moment("-"+new Date(doc.data().timestamp1).toLocaleDateString(), "DD/MM/YYYY").fromNow()), 'days').calendar().split(" ")[0] : new Date(doc.data().timestamp1).toLocaleDateString();
+                        return {...doc.data(), dateOnce : dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()]}
+                    }else{
+                        return doc.data()
+                    }
+                }))
             });
 
         }
@@ -77,6 +84,8 @@ function Chat() {
             </div>
             <div className='chat_body'>
                 {messages.map(message => (
+                    <>
+                    {message.dateOnce && <p>{message.dateOnce}</p>}
                     <p key={message.id} className={`chat_message ${ message.name == user.displayName && 'chat_receiver'}`}>
                         <span className="chat_name">{message.name}</span>
                         {message.message}
@@ -105,6 +114,7 @@ function Chat() {
                         )).fromNow().includes("hours") ? "": new Date(message.timestamp1).toDateString()} */}
                         </span>
                     </p>
+                    </>
                 ))}
             </div>
             <div className='chat_footer'>
