@@ -24,14 +24,20 @@ function Chat() {
             });
             let dateOnceFinder = {};
             db.collection('rooms').doc(roomId).collection("messages").orderBy("timestamp","asc").onSnapshot(snapshot => {
-                setMessages(snapshot.docs.map(doc => {
+                setMessages(snapshot.docs.map((doc, index) => {
                     debugger
+                    if(index == snapshot.docs.length-1){
+                        setTimeout(() => {
+                            dateOnceFinder = {};
+                        }, 400);
+                    }
                     if(!dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()]){
-                        dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()] = moment(new Date(doc.data().timestamp1).toLocaleDateString(), "DD/MM/YYYY").fromNow().includes("day") ? moment().add(parseInt(moment("-"+new Date(doc.data().timestamp1).toLocaleDateString(), "DD/MM/YYYY").fromNow()), 'days').calendar().split(" ")[0] : new Date(doc.data().timestamp1).toLocaleDateString();
+                        dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()] = moment(new Date(doc.data().timestamp1)).fromNow().includes("a day") ? "Yesterday"  : moment(new Date(doc.data().timestamp1)).fromNow().includes("second") || moment(new Date(doc.data().timestamp1)).fromNow().includes("hour") || moment(new Date(doc.data().timestamp1)).fromNow().includes("min") ? "Today": new Date(doc.data().timestamp1).toLocaleDateString();
                         return {...doc.data(), dateOnce : dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()]}
                     }else{
                         return doc.data()
                     }
+                    
                 }))
             });
 
@@ -85,7 +91,9 @@ function Chat() {
             <div className='chat_body'>
                 {messages.map(message => (
                     <>
-                    {message.dateOnce && <p>{message.dateOnce}</p>}
+                    <div className='tagHolder'>
+                    {message.dateOnce && <p className='tagsForChat'>{message.dateOnce}</p>}
+                    </div>
                     <p key={message.id} className={`chat_message ${ message.name == user.displayName && 'chat_receiver'}`}>
                         <span className="chat_name">{message.name}</span>
                         {message.message}
