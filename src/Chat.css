@@ -9,7 +9,7 @@
 }
 .tagsForChat{
     background: #248138b0;
-    width: calc(10% - 18px);
+    width: fit-content;
     color: white;
     font-weight: bold;
     text-align: center;

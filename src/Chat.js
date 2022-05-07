@@ -32,7 +32,8 @@ function Chat() {
                         }, 400);
                     }
                     if(!dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()]){
-                        dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()] = moment(new Date(doc.data().timestamp1)).fromNow().includes("a day") ? "Yesterday"  : moment(new Date(doc.data().timestamp1)).fromNow().includes("second") || moment(new Date(doc.data().timestamp1)).fromNow().includes("hour") || moment(new Date(doc.data().timestamp1)).fromNow().includes("min") ? "Today": new Date(doc.data().timestamp1).toLocaleDateString();
+                        debugger
+                        dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()] = moment(new Date(doc.data().timestamp1)).format("DD/MM/YYYY") == moment().subtract(1, "days").format("DD/MM/YYYY") ? "Yesterday"  : new Date(doc.data().timestamp1).toLocaleDateString() == new Date().toLocaleDateString() ? "Today": new Date(doc.data().timestamp1).toLocaleDateString();
                         return {...doc.data(), dateOnce : dateOnceFinder[new Date(doc.data().timestamp1).toLocaleDateString()]}
                     }else{
                         return doc.data()
