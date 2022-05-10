@@ -84,7 +84,13 @@
     margin-left: auto;
     background-color: #dcf8c6;
 }
-
+.chat_receiver.image{
+    width: 50%;
+}
+.chat_receiver.image > img{
+    width: 100%;
+    
+}
 .chat_footer{
     display: flex;
     align-items: center;

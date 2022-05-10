@@ -73,7 +73,7 @@ function SidebarChat({id,name,addNewChat, email}) {
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`}/>
                 <div className="sidebarChat_info">
                     <h2>{name}</h2>
-                    <p>Last message : {messages[0]?.message}</p>
+                    <p>Last message : {messages[0]?.type && messages[0]?.type != "image" ? messages[0]?.message : "Sent an image"}</p>
                     <p>{lengthOfTheGroup+ " People are here"}</p>
 
                 </div>
